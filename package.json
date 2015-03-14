@@ -1,0 +1,26 @@
+{
+  "name": "soundworks",
+  "version": "0.0.0",
+  "description": "",
+  "main": "main.js",
+  "devDependencies": {
+    "del": "~0.1.3",
+    "express": "~4.10.2",
+    "gulp": "~3.8.10",
+    "gulp-rename": "~1.2.0",
+    "gulp-browserify": "~0.5.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thegrtman/soundworks.git"
+  },
+  "author": "Kevin Groat <kgroat09@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thegrtman/soundworks/issues"
+  },
+  "homepage": "https://github.com/thegrtman/soundworks"
+}

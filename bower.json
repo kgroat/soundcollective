@@ -1,0 +1,21 @@
+{
+  "name": "soundworks",
+  "version": "0.0.0",
+  "homepage": "https://github.com/thegrtman/soundworks",
+  "authors": [
+    "Kevin Groat <kgroat09@gmail.com>"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
