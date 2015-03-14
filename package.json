@@ -11,7 +11,12 @@
     "gulp-browserify": "~0.5.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "bower install",
+    "prestart": "gulp",
+    "start": "node main.js",
+    "stop": "taskkill /F /IM node.exe",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "gulp dev"
   },
   "repository": {
     "type": "git",
