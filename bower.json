@@ -6,7 +6,6 @@
     "Kevin Groat <kgroat09@gmail.com>"
   ],
   "moduleType": [
-    "amd",
     "globals",
     "node"
   ],

@@ -1,6 +1,5 @@
 # SoundWorks
-## An open-source sound synthesis framework
-## Built on top of the Web Audio API
+##### An open-source sound synthesis framework built on top of the Web Audio API
 
 ### Easy startup guide
 1. Ensure nodeJS is installed on your machine, along with NPM
@@ -11,4 +10,4 @@
 4. Visit http://localhost:3000/
   * The port number may vary depending on environment variables.  Use the port number specified in the output of the npm start command
   
-Voila!
+#### Voila!
