@@ -17,7 +17,7 @@ var paths = {
 };
 
 gulp.task('clean', function (cb) {
-    del([paths.outputDir + '/' + paths.outputFile], cb);
+    del([paths.outputDir, 'tmp'], cb);
 });
 
 gulp.task('copy', function () {
@@ -37,7 +37,7 @@ gulp.task('browserify', ['ts'], function () {
 });
 
 gulp.task('watch', function () {
-    gulp.watch(paths.src + '/**/*.*', ['browserify']);
+    gulp.watch(paths.src + '/**/*.ts', ['browserify']);
 	gulp.watch(paths.htmlSrc, ['copy']);
 });
 
@@ -56,6 +56,10 @@ gulp.task('ts', function() {
     ]);
 });
 
+gulp.task('release', ['browserify', 'copy'], function(cb){
+    del(['tmp'], cb);
+});
+
 gulp.task('dev', ['watch', 'browserify', 'copy']);
 
-gulp.task('default', ['browserify', 'copy']);
+gulp.task('default', ['release']);

@@ -36,7 +36,7 @@
 
             var makeOscillator = function(){
                 var func = new Function([], textarea.value);
-                return new soundWorks.Oscillator({oscillation: func.apply(soundWorks.OscillatorHelpers.oscillations, []) });
+                return new soundWorks.Oscillator({oscillation: func.apply(soundWorks.Oscillator.oscillations, []) });
             }
 
             var getResampleValue = function(){

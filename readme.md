@@ -1,5 +1,6 @@
-# SoundWorks
-##### An open-source sound synthesis framework built on top of the Web Audio API and Web MIDI API
+# SoundCollective
+##### An open-source sound synthesis framework built with the Web Audio API and Web MIDI API
+##### WARNING: Only supported in Chrome 43+
 
 ### Easy startup guide
 1. Ensure nodeJS is installed on your machine, along with NPM
