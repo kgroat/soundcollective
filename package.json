@@ -8,7 +8,9 @@
     "express": "~4.10.2",
     "gulp": "~3.8.10",
     "gulp-rename": "~1.2.0",
-    "gulp-browserify": "~0.5.0"
+    "gulp-browserify": "~0.5.0",
+    "merge2": "^0.3.4",
+    "gulp-typescript": "^2.6.0"
   },
   "scripts": {
     "postinstall": "bower install",

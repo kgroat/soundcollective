@@ -1,5 +1,5 @@
 # SoundWorks
-##### An open-source sound synthesis framework built on top of the Web Audio API
+##### An open-source sound synthesis framework built on top of the Web Audio API and Web MIDI API
 
 ### Easy startup guide
 1. Ensure nodeJS is installed on your machine, along with NPM
@@ -11,3 +11,6 @@
   * The port number may vary depending on environment variables.  Use the port number specified in the output of the npm start command
   
 #### Voila!
+
+### Visit the site!
+You can see the test app up and running at [soundcollective.io](http://soundcollective.io/); feel free to check it out.

@@ -5,12 +5,14 @@ var gulp        = require('gulp');
 var browserify  = require('gulp-browserify');
 var rename      = require('gulp-rename');
 var del         = require('del');
+var ts          = require('gulp-typescript');
+var merge       = require('merge2');
 
 var paths = {
     outputDir: './public',
     outputFile: 'soundWorks.js',
 	htmlSrc: './src/**/*.html',
-    main: './src/SoundWorks/index.js',
+    main: './tmp/js/index.js',
     src: './src/SoundWorks'
 };
 
@@ -23,7 +25,7 @@ gulp.task('copy', function () {
 	    .pipe(gulp.dest(paths.outputDir));
 });
 
-gulp.task('browserify', function () {
+gulp.task('browserify', ['ts'], function () {
     var stream = gulp.src(paths.main)
         .pipe(browserify({
             insertGlobals: false,
@@ -37,6 +39,21 @@ gulp.task('browserify', function () {
 gulp.task('watch', function () {
     gulp.watch(paths.src + '/**/*.*', ['browserify']);
 	gulp.watch(paths.htmlSrc, ['copy']);
+});
+
+gulp.task('ts', function() {
+    var tsResult = gulp.src('src/SoundWorks/**/*.ts')
+        .pipe(ts({
+            declarationFiles: true,
+            noExternalResolve: false,
+            target: 'ES6',
+            noImplicitAny: true,
+            module: 'commonjs'
+        }));
+    return merge([
+        tsResult.dts.pipe(gulp.dest('tmp/def')),
+        tsResult.js.pipe(gulp.dest('tmp/js'))
+    ]);
 });
 
 gulp.task('dev', ['watch', 'browserify', 'copy']);
