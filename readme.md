@@ -2,6 +2,8 @@
 ##### An open-source sound synthesis framework built with the Web Audio API and Web MIDI API
 ##### WARNING: Only supported in Chrome 43+
 
+[![Join the chat at https://gitter.im/thegrtman/soundcollective](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/thegrtman/soundcollective?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ### Easy startup guide
 1. Ensure nodeJS is installed on your machine, along with NPM
 2. Run the command: npm install
