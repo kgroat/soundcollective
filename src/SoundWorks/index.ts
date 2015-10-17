@@ -5,7 +5,7 @@
 
 /// <reference path="../../typings/basic.d.ts" />
 import SrcSound from './SourceSound';
-import BuffSnd from './BufferedSound';
+import GenSound from './GeneratedSound';
 import * as oscillations from './oscillations';
 import Osc from './Oscillator';
 import BaseSource from './sources/BaseSource';
@@ -25,7 +25,7 @@ import WindowFunc from './analysis/fourier/WindowFunction';
 
 export module SoundWorks {
     export var SourceSound = SrcSound;
-    export var BufferedSound = BuffSnd;
+    export var GeneratedSound = GenSound;
     export var Oscillator = Osc;
     export module Midi {
         export var MidiState = MidState;

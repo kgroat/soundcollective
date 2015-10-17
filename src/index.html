@@ -17,12 +17,12 @@
         System.import('./SoundWorks/index').then(function(sw){
             var compoundSounds = {
                 tangent: 'return function(t, hz){\n    return Math.max(-1, Math.min(Math.tan(t * Math.PI * hz)/10, 1));\n};',
-                lawnmower: 'return this.sine.detune(-7/8).multiply(0.5).crossPlate(this.noise, {highFreq: 1/4, highFunc: this.square.crossPlate(this.sawtooth, { highFreq: 0.5, highFunc: this.square})});',
-                crossPhase: 'return this.sine.crossPlate(this.sine.phase(0.5), { highFreq: 0.5, highFunc: this.sine}).multiply(1.3);'
+                lawnmower: 'return this.sine.detune(-7/8).multiply(0.5).crossPlate({ oscillator: this.noise, highFreq: 1/4, highFunc: this.square.crossPlate({ oscillator: this.sawtooth, highFreq: 0.5, highFunc: this.square})});',
+                crossPhase: 'return this.sine.crossPlate({ oscillator: this.sine.phase(0.5), highFreq: 0.5, highFunc: this.sine}).multiply(1.3);'
             };
             var soundWorks = sw.SoundWorks;
 
-            var sound = new soundWorks.BufferedSound({ duration: 0.8 });
+            var sound;
             var textarea = document.getElementById('funcData');
             var soundPath = document.getElementById('soundPath');
             var hertzInput = document.getElementById('hertzInput');
@@ -44,12 +44,12 @@
 
             var svgElementCount = parseInt(44100 / 110);
 
-            var makeOscillator = function(){
+            function makeOscillator(){
                 var func = new Function([], textarea.value);
                 return new soundWorks.Oscillator({oscillation: func.apply(soundWorks.Oscillator.oscillations, []) });
             }
 
-            var getResampleValue = function(){
+            function getResampleValue(){
                 for(var i in resample){
                     if(resample[i].checked){
                         return resample[i].value;
@@ -63,12 +63,12 @@
                     options.frequency = hertz = newHertz;
                     hertzValue.innerHTML = hertz.toString();
                 }
-            }
+            };
 
             window.compoundSound = function(name){
                 textarea.value = compoundSounds[name];
                 playSound();
-            }
+            };
 
             window.useSound = function useSound(name){
                 name = typeof name === 'string' ? name : currentSound;
@@ -91,13 +91,13 @@
 
                 textarea.value = 'return ' + fullContents + ';';
                 playSound();
-            }
+            };
 
             window.stopSound = function stopSound(){
                 clearTimeout(timeout);
                 clearInterval(interval);
-                sound.stop();
-            }
+                sound && sound.stop();
+            };
 
             window.playSound = function playSound() {
                 window.stopSound();
@@ -105,7 +105,7 @@
                 sound = new soundWorks.SourceSound({ source: osc.getStreamSource() });
                 sound.play(options);
                 renderSound();
-            }
+            };
 
             window.renderSound = function renderSound() {
                 try {
@@ -117,7 +117,7 @@
                 } catch(e) {
                     // no-op
                 }
-            }
+            };
 
             var rebuildPath = function(){
                 var osc = makeOscillator();
@@ -134,7 +134,7 @@
                 for (var i = 0; i < length; i++) {
                     soundPath.attributes['d'].value += ' L' + (i * 1500 / (svgElementCount - 1)) + ' ' + (data[i] * 90 + 100)
                 }
-            }
+            };
 
             textarea.onkeyup = renderSound;
 
@@ -155,7 +155,7 @@
             hertzInput.onchange = function(){
                 changeHertz();
                 renderSound();
-            }
+            };
 
             bitcrush.onchange = useSound;
             crazyTown.onchange = useSound;
@@ -170,12 +170,12 @@
             
             svg.onmousedown = function(){
                 svgMouseMoving = true;
-            }
+            };
             
             svg.onmouseup = function(){
                 svgMouseMoving = false;
                 renderSound();
-            }
+            };
 
             svg.onmousemove = function(ev){
                 if(svgMouseMoving){
@@ -184,7 +184,7 @@
                     soundPath.attributes['transform'].value = 'translate(' + ((svgDeltaFrames * 1500 / svgElementCount) + svgMovementPx) + ', 0)';
                     return false;
                 }
-            }
+            };
 
             svg.ontouchstart = function(ev){
                 svgTouchMoving = true;
@@ -195,12 +195,12 @@
                     return false;
                 }
                 touchPosition = eventInfo.clientX;
-            }
+            };
 
             svg.ontouchend = svg.ontouchcancel = function(){
                 svgTouchMoving = false;
                 renderSound();
-            }
+            };
 
             svg.ontouchmove = function(ev){
                 if(svgTouchMoving){
@@ -214,7 +214,7 @@
                     soundPath.attributes['transform'].value = 'translate(' + ((svgDeltaFrames * 1500 / svgElementCount) + svgMovementPx) + ', 0)';
                     return false;
                 }
-            }
+            };
 
             useSound('sine');
 
@@ -225,7 +225,7 @@
                     }
                 }
                 return undefined;
-            }
+            };
         });
     </script>
 </head>
@@ -260,7 +260,7 @@
     <button type="button" onclick="useSound('roughMath4')">Rough Math 4</button>
     <button type="button" onclick="compoundSound('tangent')">Tangent</button>
     <br/>
-    Hertz: <input id="hertzInput" type="range" step="10" min="100" max="1000" value="440"/> (<span id="hertzValue">440</span>)
+    Hertz: <input id="hertzInput" type="range" step="10" min="100" max="2000" value="440" style="width:500px;"/> (<span id="hertzValue">440</span>)
     <br/>
     <br/>
     Resample?
