@@ -5,13 +5,10 @@
 
 import BaseSource from './BaseSource';
 
-console.log(typeof BaseSource);
-console.log(BaseSource);
-
 class VariableSource extends BaseSource {
     data: any;
 
-    constructor(options: { requestData: (startPoint: number, length: number, sampleRate: number, tmpData: any) => number[]; expectedData?: string[]; data: any }) {
+    constructor(options: { requestData: (startPoint: number, length: number, sampleRate: number, buffers: number[][], tmpData?: any) => boolean; expectedData?: string[]; data?: any }) {
         var self = this;
         var expectedData = options.expectedData || [];
         var variableRequestData = options.requestData;
@@ -21,7 +18,7 @@ class VariableSource extends BaseSource {
         Object.defineProperty(this, 'expectedData', { value: expectedData });
 
         super({
-            requestData: function(startPoint: number, length: number, sampleRate: number, tmpData: any){
+            requestData: function(startPoint: number, length: number, sampleRate: number, buffers: number[][], tmpData?: any){
                 return variableRequestData(startPoint, length, sampleRate, tmpData || self.data);
             }
         });

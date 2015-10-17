@@ -49,7 +49,6 @@ class GeneratedSound {
                     buffers.push(output.getChannelData(i));
                 }
                 var length = buffers[0].length;
-                console.log(startLocation, length);
                 shouldStop = getSound(startLocation, length, buffer.sampleRate, buffers);
             };
             source.connect(processor);

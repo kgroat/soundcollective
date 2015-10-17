@@ -31,14 +31,7 @@ class SourceSound {
 
         this.play = function(options: any){
             genSound.play(function(startLoc: number, length: number, sampleRate: number, buffers: number[][]){
-                var values = source.requestData(startLoc, length, sampleRate, options);
-                for(var i=0; i<buffers.length; i++){
-                    let buffer = buffers[i];
-                    for(var j=0; j<length; j++){
-                        buffer[j] = values[j];
-                    }
-                }
-                return false;
+                return source.requestData(startLoc, length, sampleRate, buffers, options);
             });
         };
 

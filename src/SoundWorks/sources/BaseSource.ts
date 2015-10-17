@@ -4,9 +4,9 @@
 'use strict';
 
 class BaseSource {
-    requestData: (startPoint: number, length: number, sampleRate: number, options: any) => number[];
+    requestData: (startPoint: number, length: number, sampleRate: number, buffers: number[][], options?: any) => boolean;
 
-    constructor(options: { requestData: (startPoint: number, length: number, sampleRate: number, options: any) => number[] }){
+    constructor(options: { requestData: (startPoint: number, length: number, sampleRate: number, buffers: number[][], options?: any) => boolean }){
         this.requestData = options.requestData;
     }
 }

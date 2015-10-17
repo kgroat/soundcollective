@@ -37,6 +37,8 @@
             var svgStartFrames = 0;
             var svgDeltaFrames = 0;
             var svgMovementPx = 0;
+            var osc;
+            var streamSource;
 
             var currentSound = 'sine';
             var hertz = 440;
@@ -46,7 +48,9 @@
 
             function makeOscillator(){
                 var func = new Function([], textarea.value);
-                return new soundWorks.Oscillator({oscillation: func.apply(soundWorks.Oscillator.oscillations, []) });
+                osc = new soundWorks.Oscillator({oscillation: func.apply(soundWorks.Oscillator.oscillations, []) });
+                streamSource = osc.getStreamSource();
+                return osc;
             }
 
             function getResampleValue(){
@@ -84,7 +88,7 @@
                     fullContents = fullContents + '.bitcrush()';
                 }
 
-                var resampleValue = getResampleValue()
+                var resampleValue = getResampleValue();
                 if(resampleValue != 'none'){
                     fullContents = fullContents + '.' + resampleValue + 'Resample()';
                 }
@@ -101,42 +105,51 @@
 
             window.playSound = function playSound() {
                 window.stopSound();
-                var osc = makeOscillator();
-                sound = new soundWorks.SourceSound({ source: osc.getStreamSource() });
+                makeOscillator();
+                sound = new soundWorks.SourceSound({ source: streamSource });
                 sound.play(options);
                 renderSound();
             };
 
-            window.renderSound = function renderSound() {
+            window.renderSound = function renderSound(forceRebuild) {
                 try {
                     svgPositionFrames -= parseInt(svgMovementPx / 1500 * svgElementCount);
                     svgStartFrames = Math.max(svgPositionFrames - svgElementCount, 0);
                     svgDeltaFrames = parseInt(svgStartFrames - svgPositionFrames);
                     svgMovementPx = 0;
-                    rebuildPath();
+                    rebuildPath(forceRebuild);
                 } catch(e) {
                     // no-op
                 }
             };
 
-            var rebuildPath = function(){
-                var osc = makeOscillator();
-                var streamSouce = osc.getStreamSource();
+            var rebuildPath = function(forceRebuild){
+                if(forceRebuild){
+                    makeOscillator();
+                }
 
                 var length = svgElementCount * 2 + svgPositionFrames - svgStartFrames;
 
-                var data = streamSouce.requestData(svgStartFrames, length, 44100, { frequency: hertz });
+                var data = [];
+                var i;
+                for(i=0; i<length; i++){
+                    data.push(0);
+                }
+
+                streamSource.requestData(svgStartFrames, length, 44100, [data], { frequency: hertz });
                 if(data[0] == null || data[0] == undefined || isNaN(data[0])){
                     return;
                 }
                 soundPath.attributes['transform'].value = 'translate(' + (svgDeltaFrames * 1500 / svgElementCount) + ', 0)';
                 soundPath.attributes['d'].value = 'M0 100';
-                for (var i = 0; i < length; i++) {
+                for (i = 0; i < length; i++) {
                     soundPath.attributes['d'].value += ' L' + (i * 1500 / (svgElementCount - 1)) + ' ' + (data[i] * 90 + 100)
                 }
             };
 
-            textarea.onkeyup = renderSound;
+            textarea.onkeyup = function(){
+                renderSound(true);
+            };
 
             var hertzChanging = false;
 

@@ -17,14 +17,15 @@ class Oscillator {
             return new VariableSource({
                 data: { frequency: hertz },
                 expectedData: ['frequency'],
-                requestData: function(startPoint, length, sampleRate, options){
+                requestData: function(startPoint: number, length: number, sampleRate: number, buffers: number[][], options: { frequency: number; }) : boolean {
                     sampleRate = sampleRate || 44100;
                     var startTime = startPoint / sampleRate;
-                    var data: number[] = [];
                     for(var i=0; i<length; i++){
-                        data.push(oscillation(startTime + (i / sampleRate), options.frequency));
+                        for(var j=0; j<buffers.length; j++){
+                            buffers[j][i] = oscillation(startTime + (i / sampleRate), options.frequency);
+                        }
                     }
-                    return data;
+                    return false;
                 }
             });
         };
