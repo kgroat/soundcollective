@@ -1,11 +1,11 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
-import msv = require('./MidiStateValue');
+'use strict';
 
-import MidiStateValue = msv.MidiStateValue;
+import MidiStateValue from './MidiStateValue';
 
-export class MidiState {
+class MidiState {
     checkState: (note: number) => MidiStateValue;
     getAllOn: () => { [idx: string]: MidiStateValue };
 
@@ -39,3 +39,5 @@ export class MidiState {
         };
     }
 }
+
+export default MidiState;

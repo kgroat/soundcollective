@@ -8,9 +8,6 @@
     "webrtc/MediaStream.d.ts": {
       "commit": "ed38db403a56da84731a6f77b545762ee477a45b"
     },
-    "es6-promise/es6-promise.d.ts": {
-      "commit": "ed38db403a56da84731a6f77b545762ee477a45b"
-    },
     "webaudioapi/waa.d.ts": {
       "commit": "ed38db403a56da84731a6f77b545762ee477a45b"
     }

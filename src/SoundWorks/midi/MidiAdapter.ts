@@ -1,18 +1,16 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
-import MidSt = require('./MidiState');
-import MSV = require('./MidiStateValue');
-import MAE = require('./MidiAdapterEvent');
-import sma = require('./SingletonMidiAccess');
+'use strict';
 
-import MidiState = MidSt.MidiState;
-import MidiStateValue = MSV.MidiStateValue;
-import MidiAdapterEvent = MAE.MidiAdapterEvent;
+import MidiState from './MidiState';
+import MidiStateValue from './MidiStateValue';
+import MidiAdapterEvent from './MidiAdapterEvent';
+import * as sma from './SingletonMidiAccess';
 
 var adapterList: MidiAdapter[] = [];
-var midi: MIDIAccess;
-var inputs: MIDIInputMap;
+var midi: any; //MIDIAccess
+var inputs: any; //MIDIInputMap
 
 var KEY_DOWN = 156;
 var KEY_UP = 140;
@@ -20,16 +18,19 @@ var KEY_UP = 140;
 sma.promise.then(function(){
     midi = sma.midi;
     inputs = midi.inputs;
-    inputs.get(0).onmidimessage = function(ev: MIDIMessageEvent){
-        for(var i in adapterList){
-            adapterList[i].fireEvent(ev);
-        }
+    var first = inputs.get(0);
+    if(first){
+        first.onmidimessage = function(ev: any /* MIDIMessageEvent */){
+            for(var i in adapterList){
+                adapterList[i].fireEvent(ev);
+            }
+        };
     }
 });
 
-export class MidiAdapter {
-    onstatechange: (ev: MidiAdapterEvent) => any;
-    fireEvent: (ev: MIDIMessageEvent) => void;
+class MidiAdapter {
+    onstatechange: (ev: any /* MIDIMessageEvent */) => any;
+    fireEvent: (ev: any /* MIDIMessageEvent */) => void;
     state: MidiState;
 
     constructor(options: { onstatechange?: (ev: MidiAdapterEvent) => any }) {
@@ -44,7 +45,7 @@ export class MidiAdapter {
             this.onstatechange = options.onstatechange;
         }
 
-        this.fireEvent = function(event: MIDIMessageEvent){
+        this.fireEvent = function(event: any /* MIDIMessageEvent */){
             var noteNumber = event.data[1];
             var noteValueChange = false;
             var receivedTime: number;
@@ -72,3 +73,5 @@ export class MidiAdapter {
         adapterList.push(this);
     }
 }
+
+export default MidiAdapter;

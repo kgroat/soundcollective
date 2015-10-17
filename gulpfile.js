@@ -13,27 +13,35 @@ var paths = {
     outputFile: 'soundWorks.js',
 	htmlSrc: './src/**/*.html',
     main: './tmp/js/index.js',
-    src: './src/SoundWorks'
+    src: './src/SoundWorks',
+    systemjs: './node_modules/systemjs/dist/*.js',
+    typescript: './node_modules/typescript/lib/typescript.js'
 };
 
 gulp.task('clean', function (cb) {
     del([paths.outputDir, 'tmp'], cb);
 });
 
-gulp.task('copy', function () {
-    return gulp.src(paths.htmlSrc)
-	    .pipe(gulp.dest(paths.outputDir));
+gulp.task('copy:deps', function(){
+    return gulp.src([paths.systemjs, paths.typescript])
+        .pipe(gulp.dest(paths.outputDir));
 });
 
+gulp.task('copy:html', function(){
+    return gulp.src(paths.htmlSrc)
+        .pipe(gulp.dest(paths.outputDir));
+});
+
+gulp.task('copy', ['copy:deps', 'copy:html']);
+
 gulp.task('browserify', ['ts'], function () {
-    var stream = gulp.src(paths.main)
+    return gulp.src(paths.main)
         .pipe(browserify({
             insertGlobals: false,
             debug: true
         }))
         .pipe(rename(paths.outputFile))
         .pipe(gulp.dest(paths.outputDir));
-    return stream;
 });
 
 gulp.task('watch', function () {
@@ -50,16 +58,29 @@ gulp.task('ts', function() {
             noImplicitAny: true,
             module: 'commonjs'
         }));
+    var tsSource = gulp.src('src/SoundWorks/**/*.ts');
+
     return merge([
-        tsResult.dts.pipe(gulp.dest('tmp/def')),
-        tsResult.js.pipe(gulp.dest('tmp/js'))
+        tsSource.pipe(gulp.dest('public/SoundWorks')),
+        tsResult.dts.pipe(gulp.dest('public/js/SoundWorks/def')),
+        tsResult.js.pipe(gulp.dest('public/js/SoundWorks'))
     ]);
 });
 
-gulp.task('release', ['browserify', 'copy'], function(cb){
+gulp.task('release', ['ts','copy'], function(cb){
     del(['tmp'], cb);
 });
 
-gulp.task('dev', ['watch', 'browserify', 'copy']);
+gulp.task('dev', ['watch', 'copy']);
 
 gulp.task('default', ['release']);
+
+gulp.task('polyfill', [], function(){
+    return gulp.src('./src/Polyfill/main.js')
+        .pipe(browserify({
+            insertGlobals: true,
+            debug: true
+        }))
+        .pipe(rename('audio-polyfill.js'))
+        .pipe(gulp.dest(paths.outputDir));
+});

@@ -1,9 +1,11 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
-import Src = require('./Source');
+'use strict';
 
-export class SampleSource extends Src.Source {
+import BaseSource from './BaseSource';
+
+class SampleSource extends BaseSource {
 
     constructor(options: { sample: number[]; repeat: boolean; }){
         var sample = options.sample;
@@ -31,3 +33,5 @@ export class SampleSource extends Src.Source {
         super({ requestData: requestData });
     }
 }
+
+export default SampleSource;

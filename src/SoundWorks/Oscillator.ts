@@ -1,18 +1,20 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
-import VariableSource = require('./sources/VariableSource');
-import osc = require('./oscillations');
+'use strict';
 
-export class Oscillator {
-    getStreamSource: (hertz: number) => VariableSource.VariableSource;
+import VariableSource from './sources/VariableSource';
+import * as osc from './oscillations';
+
+class Oscillator {
+    getStreamSource: (hertz: number) => VariableSource;
     oscillation: (time: number, hertz: number) => number;
 
     constructor(options: { oscillation: (time: number, hertz: number) => number }){
         var oscillation = options.oscillation || osc.oscillations.sine;
         Object.defineProperty(this, 'oscillation', { value: oscillation });
         this.getStreamSource = function(hertz: number){
-            return new VariableSource.VariableSource({
+            return new VariableSource({
                 data: { frequency: hertz },
                 expectedData: ['frequency'],
                 requestData: function(startPoint, length, sampleRate, options){
@@ -28,3 +30,11 @@ export class Oscillator {
         };
     }
 }
+
+module Oscillator {
+    export var oscillations = osc.oscillations;
+    export var filters = osc.filters;
+    export var plate = osc.plate;
+}
+
+export default Oscillator;

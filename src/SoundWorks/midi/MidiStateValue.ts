@@ -1,8 +1,9 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
+'use strict';
 
-export class MidiStateValue {
+class MidiStateValue {
     time: number;
     value: number;
 
@@ -11,3 +12,5 @@ export class MidiStateValue {
         Object.defineProperty(this, 'value', { value: value });
     }
 }
+
+export default MidiStateValue;

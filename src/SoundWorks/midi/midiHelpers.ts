@@ -1,6 +1,7 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
+'use strict';
 
 export function midiNumberToNote(midiNumber: number){
     var octave = Math.floor(midiNumber / 12);
@@ -46,15 +47,16 @@ export module MidiNote {
 
 export enum Root {
     C = 0,
+    B_SHARP = Root.C,
     C_SHARP = 1,
     D_FLAT = Root.C_SHARP,
     D = 2,
     D_SHARP = 3,
     E_FLAT = Root.D_SHARP,
     E = 4,
-    E_SHARP = Root.F,
     F_FLAT = Root.E,
     F = 5,
+    E_SHARP = Root.F,
     F_SHARP = 6,
     G_FLAT = Root.F_SHARP,
     G = 7,
@@ -64,7 +66,6 @@ export enum Root {
     A_SHARP = 10,
     B_FLAT = Root.A_SHARP,
     B = 11,
-    B_SHARP = Root.C,
     C_FLAT = Root.B,
 }
 

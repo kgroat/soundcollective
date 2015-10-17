@@ -1,9 +1,14 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
-import Src = require('./Source');
+'use strict';
 
-export class VariableSource extends Src.Source {
+import BaseSource from './BaseSource';
+
+console.log(typeof BaseSource);
+console.log(BaseSource);
+
+class VariableSource extends BaseSource {
     data: any;
 
     constructor(options: { requestData: (startPoint: number, length: number, sampleRate: number, tmpData: any) => number[]; expectedData?: string[]; data: any }) {
@@ -24,3 +29,5 @@ export class VariableSource extends Src.Source {
         super(options);
     }
 }
+
+export default VariableSource;

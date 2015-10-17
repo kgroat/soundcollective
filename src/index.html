@@ -3,14 +3,24 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <script src="soundWorks.js"></script>
+    <script src="System.src.js"></script>
     <script>
-        window.onload = function() {
+        console.log(typeof __commandLineAPI);
+        System.config({
+            transpiler: 'typescript',
+            typescriptOptions: {
+            },
+            map:{
+                typescript: './typescript.js'
+            }
+        });
+        System.import('./SoundWorks/index').then(function(sw){
             var compoundSounds = {
                 tangent: 'return function(t, hz){\n    return Math.max(-1, Math.min(Math.tan(t * Math.PI * hz)/10, 1));\n};',
                 lawnmower: 'return this.sine.detune(-7/8).multiply(0.5).crossPlate(this.noise, {highFreq: 1/4, highFunc: this.square.crossPlate(this.sawtooth, { highFreq: 0.5, highFunc: this.square})});',
                 crossPhase: 'return this.sine.crossPlate(this.sine.phase(0.5), { highFreq: 0.5, highFunc: this.sine}).multiply(1.3);'
-            }
+            };
+            var soundWorks = sw.SoundWorks;
 
             var sound = new soundWorks.BufferedSound({ duration: 0.8 });
             var textarea = document.getElementById('funcData');
@@ -216,7 +226,7 @@
                 }
                 return undefined;
             }
-        };
+        });
     </script>
 </head>
 <body>

@@ -1,4 +1,7 @@
-/// <reference path='../es6-promise/es6-promise.d.ts' />
+
+interface Promise<T> {
+    then<V>(cb: (resolution: T) => V): Promise<V>;
+}
 
 interface Navigator {
     requestMIDIAccess: (MIDIOptions?: { sysex: boolean }) => Promise<MIDIAccess>;

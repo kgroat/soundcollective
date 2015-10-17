@@ -1,11 +1,11 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
-import sac = require('./SingletonAudioContext');
+'use strict';
 
-var context = sac.context;
+import context from './SingletonAudioContext';
 
-export class BufferedSound {
+class BufferedSound {
     duration: number;
     length: number;
     sampleRate: number;
@@ -51,9 +51,12 @@ export class BufferedSound {
                 source.stop();
                 source = undefined;
             }
-        }
+        };
 
-        this.loopEnqueue = function(data: number[], startIndex = 0, bufferStartIndex = 0, length = 0){
+        this.loopEnqueue = function(data: number[], startIndex?: number, bufferStartIndex?: number, length?: number){
+            startIndex = startIndex || 0;
+            bufferStartIndex = bufferStartIndex || 0;
+            length = length || 0;
             var channelData = buffer.getChannelData(0);
             length = length || data.length - startIndex;
             for(var i=0; i<length; i++){
@@ -61,9 +64,12 @@ export class BufferedSound {
                 var bufferIndex = (i + bufferStartIndex)%buffer.length;
                 channelData[bufferIndex] = data[dataIndex];
             }
-        }
+        };
 
-        this.enqueue = function(data: number[], startIndex = 0, bufferStartIndex = 0, length = 0){
+        this.enqueue = function(data: number[], startIndex?: number, bufferStartIndex?: number, length?: number){
+            startIndex = startIndex || 0;
+            bufferStartIndex = bufferStartIndex || 0;
+            length = length || 0;
             var channelData = buffer.getChannelData(0);
             length = length || data.length - startIndex;
 
@@ -82,6 +88,8 @@ export class BufferedSound {
                 var bufferIndex = i + bufferStartIndex;
                 channelData[bufferIndex] = data[dataIndex];
             }
-        }
+        };
     }
 }
+
+export default BufferedSound;

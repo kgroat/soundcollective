@@ -1,13 +1,12 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
-import MSV = require('./MidiStateValue');
-import MidAd = require('./MidiAdapter');
+'use strict';
 
-import MidiStateValue = MSV.MidiStateValue;
-import MidiAdapter = MidAd.MidiAdapter;
+import MidiStateValue from './MidiStateValue';
+import MidiAdapter from './MidiAdapter';
 
-export class MidiAdapterEvent {
+class MidiAdapterEvent {
     note: number;
     state: MidiStateValue;
     adapter: MidiAdapter;
@@ -18,3 +17,5 @@ export class MidiAdapterEvent {
         Object.defineProperty(this, 'adapter', { value: adapter });
     }
 }
+
+export default MidiAdapterEvent;

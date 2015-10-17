@@ -1,25 +1,27 @@
 /**
  * Created by Kevin on 4/14/2015.
  */
-import VarSrc = require('./sources/VariableSource');
-import sac = require('./SingletonAudioContext');
+'use strict';
 
-const context = sac.context;
-const oneSecInMs = 1000;
+import VariableSource from './sources/VariableSource';
+import context from './SingletonAudioContext';
 
-const defaultDelay = 0.1;
-const defaultBufferCount = 3;
-const defaultSampleRate = 44100;
+var oneSecInMs = 1000;
+
+var defaultDelay = 0.1;
+var defaultBufferCount = 3;
+var defaultSampleRate = 44100;
+
 
 //TODO: make default channel count 2
-const defaultChannelCount = 1;
+var defaultChannelCount = 1;
 
-export class SourceSound {
+class SourceSound {
     play: (options: any) => void;
     stop: () => void;
     isPlaying: boolean;
 
-    constructor(options: { source: VarSrc.VariableSource; delay?: number; bufferCount?: number; sampleRate?: number; }) {
+    constructor(options: { /*source: VariableSource;*/ source: any; delay?: number; bufferCount?: number; sampleRate?: number; }) {
         if((typeof options.delay !== "number" && typeof options.delay !== "undefined") || (typeof options.delay === "number" && options.delay <= 0)){
             throw new Error("If a delay is supplied, it must be a positive number");
         }
@@ -48,9 +50,11 @@ export class SourceSound {
         var startTime = 0;
 
         var isPlaying = false;
-        Object.defineProperty(this, 'isPlaying', { get: function() { return isPlaying; } });
+        this.isPlaying = isPlaying;
+        //Object.defineProperty(this, 'isPlaying', { get: function() { return isPlaying; } });
 
-        var fillBuffer = function(startingFrame: number, length: number, options: any, channel = 0){
+        var fillBuffer = function(startingFrame: number, length: number, options: any, channel?: number){
+            channel = channel || 0;
             var channelData = buffer.getChannelData(channel);
             var newData = source.requestData(startingFrame, length, sampleRate, options);
             for(var i=0; i<newData.length; i++){
@@ -106,6 +110,8 @@ export class SourceSound {
             window.clearTimeout(timeoutId);
             timeoutId = 0;
             bufferSource.stop();
-        }
+        };
     }
 }
+
+export default SourceSound;
